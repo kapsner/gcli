@@ -1,0 +1,18 @@
+services:
+
+  gemini_cli:
+    image: $IMG_NAME:latest
+    container_name: ${CONTAINER_NAME}
+    ports:
+      - "127.0.0.1:${SSH_PORT_HOST}:${SSH_PORT_CONTAINER}"
+    volumes:
+      - "./gemini_config:$CONTAINER_CONFIG"
+      - "$DEVDIR:$CONTAINER_HOME/development"
+    networks:
+      - gemini-network
+    tty: true
+
+networks:
+  # Define the shared network as external
+  gemini-network:
+    external: true
