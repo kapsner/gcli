@@ -23,11 +23,11 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     "enabled": false,
     "logPrompts": false
   },
-  "security": {
-    "auth": {
-      "selectedType": "oauth-personal"
-    }
-  },
+  //"security": {
+  //  "auth": {
+  //    "selectedType": "oauth-personal"
+  //  }
+  //},
   "ui": {
     "theme": "Xcode"
   },
@@ -52,12 +52,12 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     "gitmcp-quarto": {
       "httpUrl": "https://gitmcp.io/quarto-dev/quarto-web",
       "timeout": 25000
-    },
+    //},
     // https://github.com/microsoft/markitdown/tree/3d4fe3cdcced195c7f6ce6d266dbf508aa147e54/packages/markitdown-mcp
     //"ms-markitdown": {
     //  "httpUrl": "http://ms_markitdown_mcp:3001/mcp",
     //  "timeout": 25000
-    //}
+    }
   }
 }
 EOF
