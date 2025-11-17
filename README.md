@@ -1,6 +1,6 @@
 # gcli
 
-To set up [gemini-cli](https://github.com/google-gemini/gemini-cli) in a containerized "sandboxed" environment, connected to the [docs-mcp-server](https://github.com/arabold/docs-mcp-server).
+To set up [gemini-cli](https://github.com/google-gemini/gemini-cli) in a containerized "sandboxed" environment, with connection to several mcp server.
 
 ## Getting started
 
