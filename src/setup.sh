@@ -23,11 +23,11 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     "enabled": false,
     "logPrompts": false
   },
-  //"security": {
-  //  "auth": {
-  //    "selectedType": "oauth-personal"
-  //  }
-  //},
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
   "ui": {
     "theme": "Xcode"
   },
