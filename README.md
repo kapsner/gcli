@@ -1,6 +1,6 @@
 # gcli
 
-To set up [gemini-cli](https://github.com/google-gemini/gemini-cli) in a containerized "sandboxed" environment, with connection to several mcp server.
+To set up [gemini-cli](https://github.com/google-gemini/gemini-cli) in a containerized "sandboxed" environment, with connection to several mcp servers.
 
 ## Getting started
 
@@ -56,7 +56,7 @@ Related issues:
 
 ## Model Context Protocol Servers
 
-This setup comes with some pre-defined MCP-servers in gemini'c `settings.json` giving access to publicly available git-repositories using the [idosal/git-mcp](https://github.com/idosal/git-mcp) GitMCP server.
+This setup comes with some pre-defined MCP-servers in gemini's `settings.json` giving access to publicly available git-repositories using the [idosal/git-mcp](https://github.com/idosal/git-mcp) GitMCP server.
 
 
 # Resources
