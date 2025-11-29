@@ -15,7 +15,7 @@ RUN apt-get clean && \
 
 RUN echo ${IMGUSER}:password | chpasswd
 
-# Create required directory for SSH to work
+# setup ssh-server; /run/sshd directory required for SSH to work
 RUN sed -i -E 's,^#?Port.*$,Port 2375,' /etc/ssh/sshd_config && \
     echo "AllowUsers ${IMGUSER}" >> /etc/ssh/sshd_config && \
     mkdir -p /run/sshd
