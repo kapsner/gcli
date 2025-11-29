@@ -1,3 +1,4 @@
+# https://github.com/google-gemini/gemini-cli/blob/576fda18ebf574b325cd4d5236053e998459fb3c/Dockerfile
 ARG GEMINI_SANDBOX_IMG="${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}"
 
 FROM ${GEMINI_SANDBOX_IMG}
