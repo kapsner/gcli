@@ -18,26 +18,41 @@ function gemini_init {
 
 # https://github.com/google-gemini/gemini-cli/issues/1696#issuecomment-3006805819
 # https://geminicli.com/docs/get-started/deployment/#2-run-in-a-sandbox-dockerpodman
-function gemini_run {
+function gemini_run_ssh {
   build_img
   cd src
   export $(grep -v '^#' .env | xargs)
   cd ..
   docker network create gemini-network
-  if $INIT; then
-    docker compose up -d gemini_cli
-  else
-    docker compose up -d
-  fi
+  docker compose up -d gemini_cli
+}
+
+
+function gemini_run {
+  cd src
+  export $(grep -v '^#' .env | xargs)
+  cd ..
+  docker network create gemini-network
+  docker run --rm -it \
+    --name ${CONTAINER_NAME} \
+    --network gemini-network \
+    --volume "./gemini_config:$CONTAINER_CONFIG" \
+    --volume "$DEVDIR:$CONTAINER_HOME/development" \
+    --workdir "$CONTAINER_HOME/development" \
+    "${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}"
+  docker network remove gemini-network
 }
   
 
 ### Parsing command line arguments:
 usage="$(basename "$0")
 _Flag: None run gemini_cli container
-_Flag: --init initialize gemini-cli"
+_Flag: --init initialize gemini-cli
+_Flag: --nossh run not in ssh modeqW3456
+/"
 
 INIT=false
+NOSSH=false
 
 while [[ $# -gt 0 ]]
 do
@@ -51,10 +66,22 @@ do
             shift # past argument
         ;;
     esac
+
+    case $key in
+        -n|--nossh)
+            SSH=true
+            printf "\nRunning not in ssh mode"
+            shift # past argument
+        ;;
+    esac
 done
 
 
 if $INIT; then
     gemini_init
+    gemini_run_ssh
+elif $NOSSH; then
+    gemini_run
+else
+    gemini_run_ssh
 fi
-gemini_run

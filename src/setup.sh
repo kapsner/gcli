@@ -15,10 +15,6 @@ SETTINGS_FILE="$CONFDIR/settings.json"
 if [ ! -f "$SETTINGS_FILE" ]; then
     cat <<EOF > "$SETTINGS_FILE"
 {
-  "ide": {
-    "enabled": true,
-    "hasSeenNudge": true
-  },
   "telemetry": {
     "enabled": false,
     "logPrompts": false
