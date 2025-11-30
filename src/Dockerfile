@@ -56,7 +56,7 @@ RUN cd /home/${IMGUSER}/ && \
     chmod +x install_extensions.sh && \
     chown ${IMGUSER}:${IMGUSER} alias.sh && \
     chown ${IMGUSER}:${IMGUSER} install_extensions.sh && \
-    echo "source ~/alias.sh" >> /home/${IMGUSER}/.bashrc s&& \
+    echo "source ~/alias.sh" >> .bashrc && \
     echo "source ~/install_extensions.sh" >> .bashrc
 
 ADD src/container_start.sh /
