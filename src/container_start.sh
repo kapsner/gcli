@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # start ssh service
-/usr/sbin/sshd
+/usr/sbin/sshd -f ~/.ssh/sshd_config -E /tmp/sshd.log
 
-# Switch to appuser and keep container running
-su - $IMGUSER -c "cd ~/development && tail -f /dev/null"
+# keep container running
+cd ~/development
+tail -f /dev/null
