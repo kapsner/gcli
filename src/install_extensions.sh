@@ -4,11 +4,6 @@
 VSCODE_DIR="/home/$USER/.vscode-server"
 POSITRON_DIR="/home/$USER/.positron-server"
 
-# extenstions to install inside container
-DESIRED_EXTENSIONS=(
-    "google.gemini-cli-vscode-ide-companion"
-)
-
 if [[ -d "$VSCODE_DIR" || -d "$POSITRON_DIR" ]]; then
     # Check specifically which directory was found (optional, but helpful)
     echo "--- SUCCESS: At least one required server directory was found. ---"
@@ -23,6 +18,11 @@ if [[ -d "$VSCODE_DIR" || -d "$POSITRON_DIR" ]]; then
 else
     return 0
 fi
+
+# extenstions to install inside container
+DESIRED_EXTENSIONS=(
+    "google.gemini-cli-vscode-ide-companion"
+)
 
 INSTALLED_EXTENSIONS=$($INSTALL_EXEC --list-extensions 2>/dev/null)
 INSTALL_COUNT=0

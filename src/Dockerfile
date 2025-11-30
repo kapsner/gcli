@@ -8,7 +8,8 @@ ENV IMGUSER="node"
 USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssh-server
+    openssh-server \
+    neovim
 
 RUN apt-get clean && \ 
     apt-get autoclean && \
@@ -39,16 +40,24 @@ RUN chown -R ${IMGUSER} ${SSHD_CONFIG_DIR} && \
 # password, used for ssh-loging
 RUN echo ${IMGUSER}:password | chpasswd
 
-ADD src/install_extensions.sh /home/${IMGUSER}/
-RUN cd /home/${IMGUSER}/ && \
-    chmod +x install_extensions.sh && \
-    chown ${IMGUSER}:${IMGUSER} install_extensions.sh && \
-    echo "source ~/install_extensions.sh" >> .bashrc
-
+########################
 # add PATH to a bash_profile script (workaround so that path is available in positron's terminal)
+# to make this working, this must be sourced during container-start
+ENV PATH=${PATH}
 RUN echo "export PATH=${PATH}" >> /home/${IMGUSER}/.bash_profile && \
     chmod +x /home/${IMGUSER}/.bash_profile && \
     chown -R ${IMGUSER}:${IMGUSER} /home/${IMGUSER}/.bash_profile
+
+# Add alias script and script for automated installation of positron extensions
+ADD src/alias.sh /home/${IMGUSER}/
+ADD src/install_extensions.sh /home/${IMGUSER}/
+RUN cd /home/${IMGUSER}/ && \
+    chmod +x alias.sh && \
+    chmod +x install_extensions.sh && \
+    chown ${IMGUSER}:${IMGUSER} alias.sh && \
+    chown ${IMGUSER}:${IMGUSER} install_extensions.sh && \
+    echo "source ~/alias.sh" >> /home/${IMGUSER}/.bashrc s&& \
+    echo "source ~/install_extensions.sh" >> .bashrc
 
 ADD src/container_start.sh /
 RUN chmod +x /container_start.sh && \

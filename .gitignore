@@ -10,6 +10,7 @@
 !/src/
 /src/*
 !/src/.env
+!/src/alias.sh
 !/src/container_start.sh
 !/src/setup.sh
 !/src/install_extensions.sh
@@ -17,3 +18,7 @@
 
 gemini_config
 oauth_creds.json
+google_accounts.json
+user_id
+state.json
+tmp/

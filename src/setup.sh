@@ -27,6 +27,9 @@ if [ ! -f "$SETTINGS_FILE" ]; then
   "ui": {
     "theme": "Xcode"
   },
+  "general": {
+    "preferredEditor": "neovim"
+  },
   "mcpServers": {
     // https://github.com/idosal/git-mcp
     "gitmcp-simpleitk": {
