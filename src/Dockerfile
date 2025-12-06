@@ -1,19 +1,47 @@
 # https://github.com/google-gemini/gemini-cli/blob/576fda18ebf574b325cd4d5236053e998459fb3c/Dockerfile
-ARG GEMINI_SANDBOX_IMG="${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}"
+#ARG GEMINI_SANDBOX_IMG="${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}"
+#FROM ${GEMINI_SANDBOX_IMG}
+FROM node:25.2.1-trixie-slim
 
-FROM ${GEMINI_SANDBOX_IMG}
+ARG GEMINI_IMG_VERSION=${GEMINI_IMG_VERSION}
 
-ENV IMGUSER="node"
+ENV IMGUSER="node" \
+    DEBIAN_FRONTEND=noninteractive
 
 USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    # curl is required to download the vscode-server
+    curl \
+    python3 \
+    python3-pip \
+    git \
     openssh-server \
-    neovim
+    # tools used by gemini
+    neovim \
+    xsel
 
 RUN apt-get clean && \ 
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
+
+RUN npm update -g npm
+
+# BUILD
+# RUN npm install typescript -g
+# RUN cd /opt && \
+#     git clone --branch v${GEMINI_IMG_VERSION} --single-branch https://github.com/google-gemini/gemini-cli && \
+#     cd gemini-cli && \
+#     npm install && \
+#     npm audit fix && \
+#     npm cache clean --force && \
+#     npm cache verify
+# RUN cd /home/${IMGUSER}/ && \
+#     echo "alias gemini='sh -c /opt/gemini-cli/bundle/gemini.js'" >> .bash_aliases && \
+#     chown ${IMGUSER}:${IMGUSER} .bash_aliases
+
+# INSTALL
+RUN npm install -g @google/gemini-cli@v${GEMINI_IMG_VERSION}
 
 # Generate new Host Keys in the dedicated directory
 ENV SSHD_CONFIG_DIR="/home/${IMGUSER}/.ssh"

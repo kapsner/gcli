@@ -22,10 +22,17 @@ if [ ! -f "$SETTINGS_FILE" ]; then
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
-    }
+    },
+    "disableYoloMode": true
   },
   "ui": {
-    "theme": "Xcode"
+    "theme": "Xcode",
+    "footer": {
+      "hideContextPercentage": false
+    },
+    "showMemoryUsage": true,
+    "showModelInfoInChat": true,
+    "useAlternateBuffer": true
   },
   "general": {
     "preferredEditor": "neovim"
