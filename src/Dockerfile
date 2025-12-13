@@ -1,9 +1,5 @@
-# https://github.com/google-gemini/gemini-cli/blob/576fda18ebf574b325cd4d5236053e998459fb3c/Dockerfile
-#ARG GEMINI_SANDBOX_IMG="${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}"
-#FROM ${GEMINI_SANDBOX_IMG}
-FROM node:25.2.1-trixie-slim
-
-ARG GEMINI_IMG_VERSION=${GEMINI_IMG_VERSION}
+ARG BASEIMAGE
+FROM ${BASEIMAGE}
 
 ENV IMGUSER="node" \
     DEBIAN_FRONTEND=noninteractive
@@ -11,37 +7,13 @@ ENV IMGUSER="node" \
 USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # curl is required to download the vscode-server
-    curl \
-    python3 \
-    python3-pip \
-    git \
     openssh-server \
-    # tools used by gemini
     neovim \
     xsel
 
 RUN apt-get clean && \ 
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
-
-RUN npm update -g npm
-
-# BUILD
-# RUN npm install typescript -g
-# RUN cd /opt && \
-#     git clone --branch v${GEMINI_IMG_VERSION} --single-branch https://github.com/google-gemini/gemini-cli && \
-#     cd gemini-cli && \
-#     npm install && \
-#     npm audit fix && \
-#     npm cache clean --force && \
-#     npm cache verify
-# RUN cd /home/${IMGUSER}/ && \
-#     echo "alias gemini='sh -c /opt/gemini-cli/bundle/gemini.js'" >> .bash_aliases && \
-#     chown ${IMGUSER}:${IMGUSER} .bash_aliases
-
-# INSTALL
-RUN npm install -g @google/gemini-cli@v${GEMINI_IMG_VERSION}
 
 # Generate new Host Keys in the dedicated directory
 ENV SSHD_CONFIG_DIR="/home/${IMGUSER}/.ssh"
@@ -72,24 +44,24 @@ RUN echo ${IMGUSER}:password | chpasswd
 # add PATH to a bash_profile script (workaround so that path is available in positron's terminal)
 # to make this working, this must be sourced during container-start
 ENV PATH=${PATH}
-RUN echo "export PATH=${PATH}" >> /home/${IMGUSER}/.bash_profile && \
-    chmod +x /home/${IMGUSER}/.bash_profile && \
-    chown -R ${IMGUSER}:${IMGUSER} /home/${IMGUSER}/.bash_profile
+RUN cd /home/${IMGUSER}/ && \
+    echo "export PATH=${PATH}" >> .bash_profile && \
+    echo "export GEMINI_DEBUG_LOG_FILE=/tmp/gem.log" >> .bash_profile && \
+    chmod +x .bash_profile && \
+    chown -R ${IMGUSER}:${IMGUSER} .bash_profile
 
 # Add alias script and script for automated installation of positron extensions
-ADD src/alias.sh /home/${IMGUSER}/
 ADD src/install_extensions.sh /home/${IMGUSER}/
 RUN cd /home/${IMGUSER}/ && \
-    chmod +x alias.sh && \
     chmod +x install_extensions.sh && \
-    chown ${IMGUSER}:${IMGUSER} alias.sh && \
     chown ${IMGUSER}:${IMGUSER} install_extensions.sh && \
-    echo "source ~/alias.sh" >> .bashrc && \
     echo "source ~/install_extensions.sh" >> .bashrc
 
+# add entrypoint and fix permissions
 ADD src/container_start.sh /
 RUN chmod +x /container_start.sh && \
-    chown ${IMGUSER}:${IMGUSER} /container_start.sh
+    chown ${IMGUSER}:${IMGUSER} /container_start.sh && \
+    chown -R ${IMGUSER}:${IMGUSER} /opt
 
 # entrypoint
 USER ${IMGUSER}

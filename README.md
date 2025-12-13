@@ -43,16 +43,10 @@ After having run the setup once, you can start the container using
 Once started, a bash-shell will be opened inside the container at the `/home/node/development/`-directory and you can change to a specific directory of your choice where you can launch gemini-cli using the command `gemini`.
 
 
-### Gemini CLI Companion (currently not working)
+### Gemini CLI Companion
 
 When using [VSCode](https://github.com/microsoft/vscode) or [Positron](https://github.com/posit-dev/positron) IDE, you can use the ['Gemini CLI Companion' Extension](https://open-vsx.org/vscode/item?itemName=Google.gemini-cli-vscode-ide-companion), which is installed by default inside the container.
-To do so, run `echo $GEMINI_CLI_IDE_SERVER_PORT` inside the container and forward the port to enable the extension to communicate with `gemini-cli`, which is running inside the container ([details](https://github.com/google-gemini/gemini-cli/issues/6297#issuecomment-3212338397)).
 
-Related issues:
-- https://github.com/google-gemini/gemini-cli/issues/6297#issuecomment-3212338397
-- https://github.com/google-gemini/gemini-cli/issues/7426
-- https://github.com/google-gemini/gemini-cli/issues/6480
-- https://github.com/google-gemini/gemini-cli/issues/6928
 
 ## Model Context Protocol Servers
 
@@ -64,8 +58,3 @@ This setup comes with some pre-defined MCP-servers in gemini's `settings.json` g
 - gemini-cli system prompt:
     - [current system prompt (11.11.2025)](https://github.com/google-gemini/gemini-cli/blob/2e2b066713e85a44754ad999a9d7aa1735fe3205/packages/core/src/core/prompts.ts#L122)
     - [original system prompt (17.4.2025)](https://github.com/google-gemini/gemini-cli/blob/add233c5043264d47ecc6d3339a383f41a241ae8/packages/cli/src/core/prompts.ts#L7)
-
-
-# Notes
-
-- Previously, the initial container was started in network-mode `"host"` to allow the redirect of the completed authentication process (see [here](https://github.com/google-gemini/gemini-cli/issues/1696#issuecomment-3006805819) and [here]() for further details). However, this leads to issues when running docker in rootless-mode, which is why the setup now relys on the SSH-connection.

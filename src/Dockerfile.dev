@@ -1,0 +1,40 @@
+ARG BASEIMAGE
+FROM ${BASEIMAGE}
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # curl is required to download the vscode-server
+    curl \
+    python3 \
+    python3-pip \
+    python3-venv \
+    git \
+    xz-utils
+
+RUN apt-get clean && \ 
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN npm update -g npm && \
+    npm install -g typescript && \
+    npm install -g @vscode/vsce
+
+# BUILD
+ENV GEM_BRANCH="fix/companion-ssh --single-branch https://github.com/kapsner/gemini-cli"
+# ENV GEM_BRANCH="v${GEMINI_IMG_VERSION} --single-branch https://github.com/google-gemini/gemini-cli"
+RUN cd /opt && \
+    git clone --branch $GEM_BRANCH && \
+    cd gemini-cli && \
+    npm install && \
+    cp bundle/gemini.js /usr/local/bin/gemini.js && \
+    chmod +x /usr/local/bin/gemini.js && \
+    chown ${IMGUSER}:${IMGUSER} /usr/local/bin/gemini.js
+# clean up
+RUN cd /opt && rm -rf gemini-cli
+RUN cd /home/${IMGUSER}/ && \
+    echo "alias gemini='/usr/local/bin/gemini.js'" >> .bash_aliases && \
+    chmod +x .bash_aliases && \
+    chown ${IMGUSER}:${IMGUSER} .bash_aliases
+
+USER ${IMGUSER}

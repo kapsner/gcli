@@ -4,10 +4,28 @@ function build_img {
   cd src
   export $(grep -v '^#' .env | xargs)
   cd ..
+
+  if $DEV; then
+      baseimage="node:trixie-slim"
+      imgname="${IMG_NAME}_prep"
+  else
+      # https://github.com/google-gemini/gemini-cli/blob/576fda18ebf574b325cd4d5236053e998459fb3c/Dockerfile
+      baseimage="${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}"
+      imgname="${IMG_NAME}"
+  fi
+  printf "\nBASEIMAGE=${baseimage}\n"
+  printf "Building ${imgname}\n"
   docker build \
-    --build-arg GEMINI_SANDBOX_IMG="${GEMINI_SANDBOX_IMG}:${GEMINI_IMG_VERSION}" \
+    --build-arg BASEIMAGE="${baseimage}" \
     -f src/Dockerfile \
-    -t "$IMG_NAME" .
+    -t "${imgname}" .
+
+  if $DEV; then
+    docker build \
+      --build-arg BASEIMAGE="${imgname}" \
+      -f src/Dockerfile.dev \
+      -t "${IMG_NAME}" .
+  fi
 }
 
 function gemini_init {
@@ -48,11 +66,13 @@ function gemini_run {
 usage="$(basename "$0")
 _Flag: None run gemini_cli container
 _Flag: --init initialize gemini-cli
+_Flag: --dev run dev-container
 _Flag: --nossh run not in ssh modeqW3456
 /"
 
 INIT=false
 NOSSH=false
+DEV=false
 
 while [[ $# -gt 0 ]]
 do
@@ -69,14 +89,23 @@ do
 
     case $key in
         -n|--nossh)
-            SSH=true
+            NOSSH=true
             printf "\nRunning not in ssh mode"
+            shift # past argument
+        ;;
+    esac
+
+    case $key in
+        -d|--dev)
+            DEV=true
+            printf "\nRunning dev-container"
             shift # past argument
         ;;
     esac
 done
 
 
+dockerfile="Dockerfile"
 if $INIT; then
     gemini_init
     gemini_run_ssh

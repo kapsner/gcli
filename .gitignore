@@ -14,11 +14,12 @@
 !/src/container_start.sh
 !/src/setup.sh
 !/src/install_extensions.sh
-!/src/Dockerfile
+!/src/Dockerfile*
 
-gemini_config
-oauth_creds.json
-google_accounts.json
-user_id
-state.json
-tmp/
+*google_accounts*
+*oauth_creds*
+*user_id*
+*settings*
+*state*
+tmp/*
+*.json
