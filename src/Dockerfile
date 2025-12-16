@@ -55,7 +55,10 @@ ADD src/install_extensions.sh /home/${IMGUSER}/
 RUN cd /home/${IMGUSER}/ && \
     chmod +x install_extensions.sh && \
     chown ${IMGUSER}:${IMGUSER} install_extensions.sh && \
-    echo "source ~/install_extensions.sh" >> .bashrc
+    echo "source ~/install_extensions.sh" >> .bashrc && \
+    echo "git config --global credential.helper cache" >> .bashrc && \
+    chmod +x .bashrc && \
+    chown ${IMGUSER}:${IMGUSER} .bashrc
 
 # add entrypoint and fix permissions
 ADD src/container_start.sh /
