@@ -21,10 +21,16 @@ function build_img {
     -t "${imgname}" .
 
   if $DEV; then
+    mkdir -p src/tmp
+    cd src/tmp
+    GEM_BRANCH="fix/companion-ssh --single-branch https://github.com/kapsner/gemini-cli"
+    git clone --branch $GEM_BRANCH
+    cd ../../
     docker build \
       --build-arg BASEIMAGE="${imgname}" \
       -f src/Dockerfile.dev \
       -t "${IMG_NAME}" .
+    rm -rf src/tmp
   fi
 }
 

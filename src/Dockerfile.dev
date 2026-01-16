@@ -21,11 +21,8 @@ RUN npm update -g npm && \
     npm install -g @vscode/vsce
 
 # BUILD
-ENV GEM_BRANCH="fix/companion-ssh --single-branch https://github.com/kapsner/gemini-cli"
-# ENV GEM_BRANCH="v${GEMINI_IMG_VERSION} --single-branch https://github.com/google-gemini/gemini-cli"
-RUN cd /opt && \
-    git clone --branch $GEM_BRANCH && \
-    cd gemini-cli && \
+ADD src/tmp/gemini-cli /opt/gemini-cli
+RUN cd /opt/gemini-cli && \
     npm install && \
     cp bundle/gemini.js /usr/local/bin/gemini.js && \
     chmod +x /usr/local/bin/gemini.js && \
