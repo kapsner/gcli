@@ -23,7 +23,8 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     "auth": {
       "selectedType": "oauth-personal"
     },
-    "disableYoloMode": true
+    "disableYoloMode": true,
+    "blockGitExtensions": true
   },
   "ui": {
     "theme": "Xcode",
@@ -32,10 +33,27 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     },
     "showMemoryUsage": true,
     "showModelInfoInChat": true,
-    "useAlternateBuffer": true
+    "useAlternateBuffer": true,
+    "showStatusInTitle": true,
+    "accessibility": {
+      "disableLoadingPhrases": true,
+      "enableLoadingPhrases": false,
+      "screenReader": false
+    },
+    "showCitations": true
   },
   "general": {
-    "preferredEditor": "neovim"
+    "preferredEditor": "neovim",
+    "sessionRetention": {
+      "enabled": true
+    },
+    "previewFeatures": true
+  },
+  "output": {
+    "format": "text"
+  },
+  "experimental": {
+    "skills": true
   },
   "mcpServers": {
     // https://github.com/idosal/git-mcp
