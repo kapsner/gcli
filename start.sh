@@ -2,6 +2,13 @@
 
 function build_img {
   cd src
+  GEMINI_VER_URL="https://api.github.com/repos/google-gemini/gemini-cli/releases/latest"
+  GEMINI_VERSION=$( \
+    curl -s ${GEMINI_VER_URL} | \
+    jq -r '.tag_name'| \
+    awk '{ gsub("[[:alpha:]]", "") ; print $0 }' \
+  )
+  sed -i -E 's,^GEMINI_IMG_VERSION=".*"$,GEMINI_IMG_VERSION="'"${GEMINI_VERSION}"'",' .env
   export $(grep -v '^#' .env | xargs)
   cd ..
 

@@ -13,78 +13,10 @@ fi
 
 SETTINGS_FILE="$CONFDIR/settings.json"
 if [ ! -f "$SETTINGS_FILE" ]; then
-    cat <<EOF > "$SETTINGS_FILE"
-{
-  "telemetry": {
-    "enabled": false,
-    "logPrompts": false
-  },
-  "security": {
-    "auth": {
-      "selectedType": "oauth-personal"
-    },
-    "disableYoloMode": true,
-    "blockGitExtensions": true
-  },
-  "ui": {
-    "theme": "Xcode",
-    "footer": {
-      "hideContextPercentage": false
-    },
-    "showMemoryUsage": true,
-    "showModelInfoInChat": true,
-    "useAlternateBuffer": true,
-    "showStatusInTitle": true,
-    "accessibility": {
-      "disableLoadingPhrases": true,
-      "enableLoadingPhrases": false,
-      "screenReader": false
-    },
-    "showCitations": true
-  },
-  "general": {
-    "preferredEditor": "neovim",
-    "sessionRetention": {
-      "enabled": true
-    },
-    "previewFeatures": true
-  },
-  "output": {
-    "format": "text"
-  },
-  "experimental": {
-    "skills": true
-  },
-  "mcpServers": {
-    // https://github.com/idosal/git-mcp
-    "gitmcp-simpleitk": {
-      "httpUrl": "https://gitmcp.io/SimpleITK/SimpleITK",
-      "timeout": 25000
-    },
-    "gitmcp-simpleitk-docs": {
-      "httpUrl": "https://gitmcp.io/SimpleITK/SimpleITK.github.io",
-      "timeout": 25000
-    },
-    "gitmcp-monai": {
-      "httpUrl": "https://gitmcp.io/Project-MONAI/MONAI",
-      "timeout": 25000
-    },
-    "gitmcp-lightning": {
-      "httpUrl": "https://gitmcp.io/Lightning-AI/pytorch-lightning",
-      "timeout": 25000
-    },
-    "gitmcp-quarto": {
-      "httpUrl": "https://gitmcp.io/quarto-dev/quarto-web",
-      "timeout": 25000
-    //},
-    // https://github.com/microsoft/markitdown/tree/3d4fe3cdcced195c7f6ce6d266dbf508aa147e54/packages/markitdown-mcp
-    //"ms-markitdown": {
-    //  "httpUrl": "http://ms_markitdown_mcp:3001/mcp",
-    //  "timeout": 25000
-    }
-  }
-}
-EOF
+    SETTINGS_BASE_URL=https://raw.githubusercontent.com/kapsner/scripts-n-configs/refs/heads/main
+    curl -o settings.json \
+    ${SETTINGS_BASE_URL}/configs/settings/gemini-settings.json && \
+    chown -R ${USER}:${USER} settings.json
 fi
 
 USERID_FILE="$CONFDIR/user_id"
