@@ -56,5 +56,6 @@ This setup comes with some pre-defined MCP-servers in gemini's `settings.json` g
 # Resources
 
 - gemini-cli system prompt:
-    - [current system prompt (11.11.2025)](https://github.com/google-gemini/gemini-cli/blob/2e2b066713e85a44754ad999a9d7aa1735fe3205/packages/core/src/core/prompts.ts#L122)
+    - [current system prompt (22.02.2026)](https://github.com/google-gemini/gemini-cli/blob/84666e1bbc35276eff31d8b83e9608f14ac8958a/packages/core/src/prompts/snippets.ts)
+    - [version 11.11.2025)](https://github.com/google-gemini/gemini-cli/blob/2e2b066713e85a44754ad999a9d7aa1735fe3205/packages/core/src/core/prompts.ts#L122)
     - [original system prompt (17.4.2025)](https://github.com/google-gemini/gemini-cli/blob/add233c5043264d47ecc6d3339a383f41a241ae8/packages/cli/src/core/prompts.ts#L7)
